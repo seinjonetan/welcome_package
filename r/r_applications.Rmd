@@ -1,0 +1,322 @@
+# MFRE R Applications
+
+You should go through the python notebooks as well as the intro for R before starting with this notebook. 
+
+Now that you have a basic understanding of R, let's try to implement some of the concepts that we have learned in the previous notebooks. In this notebook, we will be going through real world problems and try to implement solutions in R.
+
+Learning Objectives:
+
+1. Basic data manipulation + data cleaning
+2. Data visualization
+3. Data analysis
+4. Fun with machine learning
+
+Let's get started!
+
+## Data Manipulation
+
+R comes with built in datasets that you can use to practice your data manipulation skills. In this section, we will be using the `mtcars` dataset. This dataset contains information about different car models and their specifications.
+
+Let's start by loading the dataset and taking a look at the first few rows. And the description of the dataset.
+
+```{r}
+head(mtcars)
+
+# You can get a description of the dataset by using the following command in your R terminal
+?mtcars
+```
+
+Let's now load this dataset into a dataframe and start manipulating it.
+
+```{r}
+df <- mtcars
+
+# Let's asusme that we want to filter out all the cars that have a mpg greater than 20
+df_filtered <- df[df$mpg > 20, ]
+head(df_filtered)
+
+# Now let's get the average hp for all the cars that have a mpg greater than 20
+mean_hp <- mean(df_filtered$hp)
+print(mean_hp)
+```
+
+Often times we have to extract specific subsets of data from a dataframe or csv file. For example, let's say we want to get the average hp of cars by manufacturer. There is no column listing the manufacturer in the `mtcars` dataset. Notice however that the car names are in the format `manufacturer model`. We can extract the manufacturer by splitting the car name on the space character.
+
+```{r}
+# Let's extract the manufacturer from the car name
+df$manufacturer <- sapply(strsplit(rownames(df), " "), "[", 1)
+
+# Now let's get the average hp by manufacturer
+df_summary <- aggregate(hp ~ manufacturer, data = df, mean)
+print(df_summary)
+```
+
+Here's a breakdown of how the above code works:
+
+1. We use the `sapply` function to apply the `strsplit` function to each rowname in the dataframe. The `strsplit` function splits the rowname on the space character and returns a list of the split strings. It identifies the space character as the delimiter using the `" "` argument.
+2. We then use the `[` function to apply the `[1]` function to each element in the list, selecting the first element in the split string. This function extracts the first element of each split string, which corresponds to the manufacturer.
+3. We then use the `aggregate` function to get the average hp by manufacturer.
+
+## Data Cleaning
+
+Data cleaning is an important step in the data analysis process. It involves identifying and correcting errors in the data, handling missing values, and transforming the data into a format that is suitable for analysis. In this section, we will go through some common data cleaning tasks in R.
+
+Let's start by loading a dataset that contains missing values and errors. We will use the `iris` dataset for this purpose.
+
+```{r}
+# Load the iris dataset
+df <- iris
+
+# Introduce some missing values
+df[sample(1:nrow(df), 10), "Sepal.Length"] <- NA
+
+# Introduce some errors
+df[sample(1:nrow(df), 10), "Species"] <- "error"
+
+# Check for missing values
+print(sum(is.na(df)))
+
+# Check for errors
+print(sum(df$Species == "error"))
+```
+
+Now that we have introduced missing values and errors into the dataset, let's clean it up.
+
+```{r}
+# Remove rows with missing values
+df_clean <- df[complete.cases(df), ]
+
+# Remove rows with errors
+df_clean <- df_clean[df_clean$Species != "error", ]
+
+# Check for missing values
+print(sum(is.na(df_clean)))
+
+# Check for errors
+print(sum(df_clean$Species == "error"))
+
+# Check the dimensions of the cleaned dataset
+print(dim(df_clean))
+```
+
+In the code above, we used the `complete.cases` function to remove rows with missing values. This function returns a logical vector indicating whether each row in the dataframe contains missing values. We then used this logical vector to subset the dataframe and remove rows with missing values.
+
+We also used the `!=` operator to remove rows with errors in the `Species` column. This operator returns a logical vector indicating whether each element in the column is not equal to the specified value. We then used this logical vector to subset the dataframe and remove rows with errors.
+
+Sometimes we may get time series data that may have missing values in certain time periods. In such cases, we may want to fill in the missing values with the last known value. Let's see how we can do this using the `zoo` package in R.
+
+```{r}
+# Check if the zoo package is installed
+if (!require(zoo)) {
+    # Install the zoo package
+    install.packages("zoo")
+
+    # Load the zoo package
+    library(zoo)
+}
+
+# Create a time series with missing values
+ts <- zoo(c(1, NA, 3, NA, 5), as.Date(c("2022-01-01", "2022-01-02", "2022-01-03", "2022-01-04", "2022-01-05")))
+print(ts)
+
+# Fill in missing values with the last known value
+ts_filled <- na.locf(ts)
+print(ts_filled)
+```
+
+In the code above, we used the `zoo` package to create a time series object with missing values. We then used the `na.locf` function to fill in the missing values with the last known value. This function replaces each missing value with the last non-missing value in the time series.
+
+## Data Visualization
+
+Data visualization is an important tool for exploring and communicating patterns in data. In this section, we will go through some common data visualization techniques in R.
+
+Let's start by loading the `mtcars` dataset and creating a scatter plot of `mpg` vs `hp`.
+
+```{r}
+# Load the mtcars dataset
+df <- mtcars
+
+# Create a scatter plot of mpg vs hp
+plot(df$hp, df$mpg, xlab = "Horsepower", ylab = "Miles per Gallon", main = "Scatter Plot of MPG vs HP")
+```
+
+Next, let's create a boxplot of `mpg` by `cyl` to visualize the distribution of `mpg` for different numbers of cylinders.
+
+```{r}
+# Create a boxplot of mpg by cyl
+boxplot(df$mpg ~ df$cyl, xlab = "Number of Cylinders", ylab = "Miles per Gallon", main = "Boxplot of MPG by Cylinders")
+```
+
+In both these plot functions we used the `plot` and `boxplot` functions to create scatter plots and boxplots, respectively. We also used the `xlab`, `ylab`, and `main` arguments to add labels and titles to the plots.
+
+Another common visualization technique is the histogram. Let's create a histogram of `mpg` to visualize the distribution of miles per gallon in the `mtcars` dataset.
+
+```{r}
+# Create a histogram of mpg
+hist(df$mpg, xlab = "Miles per Gallon", ylab = "Frequency", main = "Histogram of MPG")
+```
+
+Visualization is a powerful tool for exploring data and identifying patterns. In R, there are many packages available for creating different types of plots, such as `ggplot2`, `plotly`, and `ggvis`. These packages provide more flexibility and customization options for creating complex and interactive visualizations.
+
+## Data Analysis
+
+Data analysis involves exploring and summarizing data to extract insights and make informed decisions. In this section, we will go through some common data analysis techniques in R.
+
+Let's go back to the scatter plot we created earlier of `mpg` vs `hp`. We can calculate the correlation between these two variables to quantify the strength and direction of the relationship.
+
+```{r}
+# Load the mtcars dataset
+df <- mtcars
+
+# Calculate the correlation between mpg and hp
+correlation <- cor(df$mpg, df$hp)
+print(correlation)
+```
+
+In the code above, we used the `cor` function to calculate the correlation between `mpg` and `hp`. The correlation coefficient ranges from -1 to 1, with values closer to 1 indicating a strong positive relationship, values closer to -1 indicating a strong negative relationship, and values close to 0 indicating no relationship.
+
+Another common data analysis technique is linear regression. Let's fit a linear regression model to predict `mpg` based on `hp` in the `mtcars` dataset.
+
+```{r}
+# Fit a linear regression model
+model <- lm(mpg ~ hp, data = df)
+
+# Get the summary of the model
+summary(model)
+```
+
+In the code above, we used the `lm` function to fit a linear regression model to predict `mpg` based on `hp`. We then used the `summary` function to get a summary of the model, including the coefficients, standard errors, t-values, and p-values.
+
+Linear regression is a powerful tool for modeling the relationship between two continuous variables and making predictions based on that relationship. In R, there are many packages available for fitting different types of regression models, such as `glm`, `lm`, and `lme4`.
+
+## Fun with Machine Learning
+
+Machine learning is a powerful tool for building predictive models and making informed decisions based on data. In this section, we will go through some common machine learning techniques in R.
+
+Let's start by loading the `iris` dataset and splitting it into training and testing sets.
+
+```{r}
+# Load the iris dataset
+df <- iris
+
+# Split the dataset into training and testing sets
+set.seed(123)
+train_indices <- sample(1:nrow(df), 0.7 * nrow(df))
+train_data <- df[train_indices, ]
+test_data <- df[-train_indices, ]
+```
+
+Next, let's fit a k-nearest neighbors (KNN) classifier to predict the species of iris flowers based on their sepal length and width.
+
+```{r}
+# Fit a KNN classifier
+if (!require(class)) {
+    # Install the class package
+    install.packages("class")
+
+    # Load the class package
+    library(class)
+}
+
+model <- knn(train_data[, c("Sepal.Length", "Sepal.Width")], test_data[, c("Sepal.Length", "Sepal.Width")], train_data$Species, k = 3)
+
+# Get the confusion matrix
+confusion_matrix <- table(model, test_data$Species)
+print(confusion_matrix)
+```
+
+In the code above, we used the `knn` function from the `class` package to fit a KNN classifier to predict the species of iris flowers based on their sepal length and width. We then used the `table` function to create a confusion matrix to evaluate the performance of the classifier.
+
+KNN stands for k-nearest neighbors, a simple and intuitive machine learning algorithm that classifies new data points based on the majority class of their k nearest neighbors in the training data. If we set k = 3, the algorithm will consider the 3 nearest neighbors of a new data point and assign it the class that is most common among those neighbors. Here's a visual representation of how the KNN algorithm works:
+
+```{r}
+# Load the required packages
+library(class)
+if (!require(ggplot2)) {
+    install.packages("ggplot2")
+
+    library(ggplot2)
+}
+
+# Split the iris dataset into a training set and a test set
+set.seed(123)
+ind <- sample(2, nrow(iris), replace = TRUE, prob = c(0.7, 0.3))
+iris.train <- iris[ind == 1, 1:4]
+iris.test <- iris[ind == 2, 1:4]
+
+# Perform KNN classification
+cl <- iris[ind == 1, 5]
+knn.pred <- knn(iris.train, iris.test, cl, k = 3)
+
+# Create a data frame for plotting
+df <- data.frame(iris.test, Species = knn.pred)
+
+# Plot the results
+ggplot(df, aes(Petal.Length, Petal.Width, color = Species)) +
+    geom_point() +
+    labs(
+        title = "KNN classification of the iris dataset",
+        x = "Petal Length",
+        y = "Petal Width"
+    )
+```
+
+The confusion matrix shows the number of correct and incorrect predictions made by the classifier. It can be used to calculate metrics such as accuracy, precision, recall, and F1 score to evaluate the performance of the classifier.
+
+Now let's use the classifier to make predictions on new data.
+
+```{r}
+# Make predictions on new data
+new_data <- data.frame(Sepal.Length = c(5.1, 6.2, 7.3), Sepal.Width = c(3.5, 2.9, 2.8))
+predictions <- knn(train_data[, c("Sepal.Length", "Sepal.Width")], new_data, train_data$Species, k = 3)
+
+print(predictions)
+```
+
+In the code above, we created a new dataframe `new_data` with sepal length and width values for three new iris flowers. We then used the KNN classifier to make predictions on the new data based on the training data.
+
+Machine learning is a powerful tool for building predictive models and making informed decisions based on data. In R, there are many packages available for fitting different types of machine learning models, such as `caret`, `randomForest`, and `xgboost`.
+
+## Excercises 
+
+You will promarily be dealing with the `mtcars` dataset for the excercises. As a reminer, here's what teh dataset looks like:
+
+```{r}
+head(mtcars)
+```
+
+1. Filter out all the cars that have a `mpg` greater than 20 and `hp` greater than 100. What is the average `wt` of these cars?
+
+```{r}
+# Your code here
+```
+
+2. Create a new column in the `mtcars` dataset called `disp_per_cyl` that calculates the displacement per cylinder for each car. The displacement per cylinder can be calculated by dividing the `disp` column by the `cyl` column.
+
+```{r}
+# Your code here
+```
+
+3. Create a scatter plot of `disp_per_cyl` vs `mpg` in the `mtcars` dataset. Add labels to the x-axis, y-axis, and title of the plot.
+
+```{r}
+# Your code here
+```
+
+4. Create a boxplot of `disp_per_cyl` by `cyl` in the `mtcars` dataset. Add labels to the x-axis, y-axis, and title of the plot.
+
+```{r}
+# Your code here
+```
+
+5. Calculate the correlation between `disp_per_cyl` and `mpg` in the `mtcars` dataset.
+
+```{r}
+# Your code here
+```
+
+6. Fit a linear regression model to predict `mpg` based on `disp_per_cyl` in the `mtcars` dataset. Get the summary of the model.
+
+```{r}
+# Your code here
+```

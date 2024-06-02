@@ -1,0 +1,15 @@
+{
+    "name": "My Project",
+    "image": "jupyter/datascience-notebook",
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "REditorSupport.r"
+    ],
+    "forwardPorts": [
+        8888
+    ]
+}
