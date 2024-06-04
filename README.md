@@ -14,18 +14,8 @@ This welcome package is deisgned as a distilation of the most important concepts
 
 For those of you who are already familiar with git and github, feel free to make a fork of this repository and clone it to your local machine and use whatever IDE you are comfortable with. For those of you who are not familiar with git, please use the series of tutorials below to get started with your first IDE or intergrated development environment.
 
-1. [Setting up your IDE](https://www.youtube.com/watch?v=5F6YR9sYb3A)
+1. [Setting up your IDE](https://youtu.be/1Cr37YSdIrw)
 
-Some Image 
+2. [Running a Jupyter Notebook](https://youtu.be/ssTfIuBLwE0)
 
-2. [Accessing the codespace](https://www.youtube.com/watch?v=5F6YR9sYb3A)
-
-Some Image
-
-3. [Running a Jupyter Notebook](https://www.youtube.com/watch?v=5F6YR9sYb3A)
-
-Some Image
-
-4. [Knitting an RMarkdown file](https://www.youtube.com/watch?v=5F6YR9sYb3A)
-
-Some Image
+3. [Knitting an RMarkdown file](https://youtu.be/n6Y_n2c1T8s)
