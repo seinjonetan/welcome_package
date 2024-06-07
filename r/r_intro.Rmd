@@ -1,6 +1,6 @@
 # MFRE R Prep Section
 
-All of you should have gone through the Python prep seciton by now and should be ready to start the R prep section. This section is designed to help you get familiar with the R programming language.
+All of you should have gone through the Python prep section by now and should be ready to start the R prep section. This section is designed to help you get familiar with the R programming language.
 
 Many of the concepts you will have learned for Python will be applicable to R, but there are some key differences in syntax and functionality.
 
@@ -8,9 +8,9 @@ Many of the concepts you will have learned for Python will be applicable to R, b
 
 While the most basic way to run R code is to write in a `.r` file and use the R console, we will be using R markdown files to run our code. R markdown files are a great way to combine code, output, and text in a single document.
 
-Rmd or R markdown files can be edited using your IDE or intergrated development environment of your choice, but it can also be edited using a simple text editor like notepad. The advantage of using Rmd over a simple R script is that you can include text, code, and output in a single document and have it be rendered or knitted into a variety of formats like HTML, PDF, or Word.
+Rmd or R markdown files can be edited using your IDE or integrated development environment of your choice, but it can also be edited using a simple text editor like Notepad. The advantage of using Rmd over a simple R script is that you can include text, code, and output in a single document and have it be rendered or knitted into a variety of formats like HTML, PDF, or Word.
 
-Simillar to Jupiter notebooks, R markdown files are divided into cells. Each cell can contain either text or code. You can run the code in a cell by pressing the run button or by using the keyboard shortcut `Ctrl + Enter`.
+Similar to Jupyter notebooks, R markdown files are divided into cells. Each cell can contain either text or code. You can run the code in a cell by pressing the run button or by using the keyboard shortcut `Ctrl + Enter`.
 
 Here is a code example:
 
@@ -21,19 +21,19 @@ result <- first_value + second_value
 print(result)
 ```
 
-Here we see the first difference between the python and R syntax, in R we use the `<-` operator to assign values to variables. The code above assigns the value 5 to the variable `x`, the value 10 to the variable `y`, and then adds `x` and `y` together and assigns the result to the variable `z`. The code then prints the value of `z`.
+Here we see the first difference between the Python and R syntax. In R, we use the `<-` operator to assign values to variables. The code above assigns the value 5 to the variable `x`, the value 10 to the variable `y`, and then adds `x` and `y` together and assigns the result to the variable `z`. The code then prints the value of `z`.
 
 For those who are familiar with other languages, R is syntactically similar to C and C++.
 
 # Introduction to R
 
-R is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. The R language is widely used among statisticians and data miners for developing statistical software and data analysis. While you will rarely use R for general programming, it is a powerful tool for data analysis and visualization due in part to the liteny of packages available for R.
+R is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. The R language is widely used among statisticians and data miners for developing statistical software and data analysis. While you will rarely use R for general programming, it is a powerful tool for data analysis and visualization due in part to the litany of packages available for R.
 
-## Object Oriented Programming vs Functional Programming
+## Object-Oriented Programming vs Functional Programming
 
-R is a functional programming language, which means that it is designed to evaluate mathematical functions and avoid changing state and mutable data. This is in contrast to object oriented programming languages like Python, which gives you the option of doing functional programming but are primarily designed to work with objects and classes.
+R is a functional programming language, which means that it is designed to evaluate mathematical functions and avoid changing state and mutable data. This is in contrast to object-oriented programming languages like Python, which gives you the option of doing functional programming but are primarily designed to work with objects and classes.
 
-For our purposes, this means that unlike python where we can access methods and properties of objects, in R we will be working with functions and dataframes.
+For our purposes, this means that unlike Python where we can access methods and properties of objects, in R we will be working with functions and data frames.
 
 Here's an example of this difference in action:
 
@@ -71,7 +71,7 @@ We will go through the following topics in this section:
 
 R has a number of data types, some of which are similar to Python and some of which are unique to R. Here are some of the most common data types in R:
 
-1. **Numeric** - This is the most common data type in R and is used to store numbers. Numeric data types can be integers (whole numbers) or floats (numebrs with a decimal).
+1. **Numeric** - This is the most common data type in R and is used to store numbers. Numeric data types can be integers (whole numbers) or floats (numbers with a decimal).
 2. **Character** - This data type is used to store strings.
 3. **Logical** - This data type is used to store boolean values, i.e. `TRUE` or `FALSE`.
 4. **Integer** - This data type is used to store whole numbers.
@@ -107,6 +107,7 @@ print(r_value)
 ```
 
 Mixing data types in R can lead to unexpected results, so it's important to be aware of the data types you are working with. Here are some examples of how mixing data types can lead to unexpected results:
+
 
 ```{r}
 # Adding a numeric and a character
@@ -434,28 +435,15 @@ output: html_document
 1. Construct a 2 x 3 matrix which takes in values ranging from 1 to 6 in decending order row wise.
 ```{r}
 # Your code here
-mtx <- matrix(6:1, nrow = 2, ncol = 3, byrow = TRUE)
-print(mtx)
 ```
 
 2. Write a function that prints a pyramid using the `*` character. The function should take in a positive integer as an argument, and print a pyramid with that many levels. 
 
 ```{r}
 # Your code here
-print_pyramid <- function(levels) {
-    if (levels <= 0) {
-        cat("Invalid input: levels must be a positive integer\n")
-        return
-    }
-    for (i in 1:levels) {
-        cat(rep(" ", levels - i), rep("*", 2 * i - 1), "\n")
-    }
-}
-
-print_pyramid(5)
 ```
 
-3. The folowwing function is supposed to return the cumulative sum of numbers from 1 to n. However, there is a bug in the code. Find and fix the bug.
+3. The following function is supposed to return the cumulative sum of numbers from 1 to n. However, there is a bug in the code. Find and fix the bug.
 
 ```{r}
 # Your code here
@@ -474,24 +462,7 @@ print(cum_sum(5))
 
 ```{r}
 # Your code here
-check_sum <- function(credit_card_number) {
-    if (nchar(credit_card_number) != 16) {
-        cat("Invalid input: credit card number must be 16 digits\n")
-        return(FALSE)
-    }
-    sum <- 0
-    for (i in 1:16) {
-        digit <- as.integer(substr(credit_card_number, i, i))
-        sum <- sum + digit
-    }
-    if (sum %% 10 == 0) {
-        return(TRUE)
-    } else {
-        return(FALSE)
-    }
-}
-
-print(check_sum("1234567890123456"))
+string <- "1234567890123456"
 ```
 
 5. You are given a 3 x 3 dataframe with the rows representing cities and the columns representing dates. Identify if any of the cities have a temperature above 30 degrees on any of the dates and add a new column to the dataframe with the value `TRUE` if the city has a temperature above 30 degrees and `FALSE` if it does not.
@@ -504,7 +475,4 @@ df <- data.frame(
     date_2 = c(28, 29, 30),
     date_3 = c(30, 32, 33)
 )
-
-df$above_30 <- df$date_1 > 30 | df$date_2 > 30 | df$date_3 > 30
-print(df)
 ```
