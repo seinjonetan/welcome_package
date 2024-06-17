@@ -22,7 +22,9 @@ For those of you who are already familiar with git and GitHub, feel free to make
 
 1. Go to [GitHub](https://github.com) and create an account using your UBC email address.
 
-2. Once you have created an account, go to [GitHub Education](https://education.github.com) and request a student developer pack. This will give you access to a number of tools and resources that you can use to get started.
+2. (Optional, can be done later on) Once you have created an account, go to [GitHub Education](https://education.github.com) and request a student developer pack. This will give you access to a number of tools and resources that you can use to get started.
+
+**Update** You might not be able to get the student developer pack just yet as you don't have your student ID. But you can still create an account and start using GitHub.
 
 ## Once you have a github account, follow the series of videos below:
 
